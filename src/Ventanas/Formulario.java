@@ -1,17 +1,20 @@
+package Ventanas;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
+import Base.BaseDeDatos;
 import Materials.*;
 
 public class Formulario extends JFrame {
     JLabel lblBienvenida;
     CLabels lblNombre, lblRegistro;
     CTextField txtNombre, txtRegistro;
-    JButton btnEnviar;
+    CButton btnEnviar;
     private TextObserver observer;
-Formulario(){
-    super("Formulario");
+public Formulario(){
+    super("Ventanas.Formulario");
     crearFormulario();
 }
 
@@ -22,10 +25,9 @@ public void crearFormulario(){
     lblRegistro=new CLabels("Registro:");
     txtNombre=new CTextField(40);
     txtRegistro=new CTextField(8);
-    btnEnviar=new JButton("Enviar datos");
+    btnEnviar=new CButton("Enviar datos");
 
     lblBienvenida.setFont(new Font("Serif", Font.PLAIN, 37));
-    btnEnviar.setFont(new Font("Serif", Font.PLAIN, 37));
 
     GroupLayout gl =new GroupLayout(getContentPane());
     gl.setAutoCreateGaps(true);
@@ -124,8 +126,11 @@ public void accionBoton(){
     if(observer!=null){
         observer.updateText(txtNombre.getText(), txtRegistro.getText());
     }
+    BaseDeDatos bd = new BaseDeDatos();
+    bd.AgregarDatos(txtNombre.getText(), txtRegistro.getText());
     txtNombre.setText("");
     txtRegistro.setText("");
+
 }
 
 public void addObserver(TextObserver observer){

@@ -1,8 +1,23 @@
+import Base.BaseDeDatos;
+import Models.DatosUsuario;
+import Ventanas.Formulario;
+import Ventanas.Modificar;
+
+import java.util.List;
+
 public class Main {
     public static void main(String[] args) {
         Formulario x = new Formulario();
+        Modificar modi = new Modificar();
         x.setVisible(true);
-        x.addObserver(new TextObserver() {
+        modi.setVisible(true);
+    }
+}
+
+//region OBSERVER
+        /*
+        String nom, reg;
+        x.addObserver(new Ventanas.TextObserver() {
             @Override
             public void updateText(String nombre, String registro) {
                 //>>>>>>>>>>>desde aqui manipular los datos de nombre y registro<<<<<<
@@ -12,5 +27,17 @@ public class Main {
                 System.out.println("——————————————————————————————");
             }
         });
-    }
-}
+         */
+//endregion
+
+//region PrintAll
+/*
+BaseDeDatos BD = new BaseDeDatos();
+List<DatosUsuario> respuesta = BD.LeerTodosLosDatos();
+        for (DatosUsuario fila : respuesta) {
+            Auxiliares.ImprimirColumnasDeFila(fila.getId(), fila.getNombre(), fila.getRegistro());
+        }
+*/
+//endregion
+
+//Use Material Design
