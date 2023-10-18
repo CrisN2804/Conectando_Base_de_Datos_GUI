@@ -1,5 +1,6 @@
 import Base.BaseDeDatos;
 import Models.DatosUsuario;
+import Ventanas.ChooseOptions;
 import Ventanas.Formulario;
 import Ventanas.Modificar;
 
@@ -7,10 +8,8 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
-        Formulario x = new Formulario();
-        Modificar modi = new Modificar();
-        x.setVisible(true);
-        modi.setVisible(true);
+        ChooseOptions chooseOptions = new ChooseOptions();
+        chooseOptions.setVisible(true);
     }
 }
 

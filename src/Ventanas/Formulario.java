@@ -105,7 +105,6 @@ public void crearFormulario(){
 
     setSize(500, 600);
     setLocationRelativeTo(null);
-    setDefaultCloseOperation(EXIT_ON_CLOSE);
 
     //endregion
     //si se presiona el boton

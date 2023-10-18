@@ -17,6 +17,7 @@ public class Modificar extends JFrame {
     CLabels lblId, lblNombre, lblRegistro;
     CTextField txtNombre, txtRegistro;
     CButton btnIzquierda, btnDerecha, btnGuardar;
+    JButton btnEliminar;
     BaseDeDatos BD = new BaseDeDatos();
     List<DatosUsuario> datos;
     DatosUsuario datoMostrar;
@@ -27,21 +28,29 @@ public class Modificar extends JFrame {
     }
     void metodo(){
         datos = BD.LeerTodosLosDatos();
-        datoMostrar = datos.get(navegador);
-
         lblBienvenida = new JLabel("Bienvenido, editaremos tus datos", SwingConstants.CENTER);
-        lblId = new CLabels("ID: " + datoMostrar.getId());
+        lblId = new CLabels();
         lblNombre=new CLabels("Nombre:");
         lblRegistro = new CLabels("Registro:");
         txtNombre = new CTextField(40);
-        txtNombre.setText(datoMostrar.getNombre());
         txtRegistro = new CTextField(8);
-        txtRegistro.setText(datoMostrar.getRegistro());
         btnIzquierda= new CButton("<");
         btnDerecha=new CButton(">");
         btnGuardar = new CButton("Guardar");
+        btnEliminar = new JButton("DEL");
+        btnEliminar.setBackground(Color.red);
+        btnEliminar.setForeground(Color.WHITE);
 
         lblBienvenida.setFont(new Font("Serif", Font.PLAIN, 37));
+
+        if(datos.isEmpty()){
+            lblId.setText("NO HAY NADA");
+        }else{
+            datoMostrar = datos.get(navegador);
+            lblId.setText("ID: " + datoMostrar.getId());
+            txtNombre.setText(datoMostrar.getNombre());
+            txtRegistro.setText(datoMostrar.getRegistro());
+        }
 
         GroupLayout gl = new GroupLayout(getContentPane());
         gl.setAutoCreateContainerGaps(true);
@@ -67,6 +76,9 @@ public class Modificar extends JFrame {
                                         .addComponent(btnGuardar)
                                         .addComponent(btnDerecha)
                         )
+                        .addGap(40)
+                        .addComponent(btnEliminar)
+                        .addGap(40)
         );
 
         gl.setVerticalGroup(
@@ -89,55 +101,78 @@ public class Modificar extends JFrame {
                                         .addComponent(btnGuardar)
                                         .addComponent(btnDerecha)
                         )
+                        .addComponent(btnEliminar)
         );
         setLayout(gl);
         setSize(600, 300);
         setLocationRelativeTo(null);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
-
 
         btnIzquierda.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 datos = BD.LeerTodosLosDatos();
-                if(navegador != 0){
-                    navegador--;
-                }else{
-                    navegador= datos.size() -1;
+                if(!datos.isEmpty()){
+                    if(navegador != 0){
+                        navegador--;
+                    }else{
+                        navegador= datos.size() -1;
+                    }
+                    datoMostrar = datos.get(navegador);
+                    updateTextField();
                 }
-                datoMostrar = datos.get(navegador);
-                lblId.setText("ID: " + datoMostrar.getId());
-                txtNombre.setText(datoMostrar.getNombre());
-                txtRegistro.setText(datoMostrar.getRegistro());
             }
         });
         btnDerecha.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 datos = BD.LeerTodosLosDatos();
-                if(navegador != (datos.size()-1)){
-                    navegador++;
-                }else{
-                    navegador=0;
+                if(!datos.isEmpty()){
+                    if(navegador != (datos.size()-1)){
+                        navegador++;
+                    }else{
+                        navegador=0;
+                    }
+                    datoMostrar = datos.get(navegador);
+                    updateTextField();
                 }
-                datoMostrar = datos.get(navegador);
-                lblId.setText("ID: " + datoMostrar.getId());
-                txtNombre.setText(datoMostrar.getNombre());
-                txtRegistro.setText(datoMostrar.getRegistro());
             }
         });
 
         btnGuardar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                boolean res = BD.actualizarDatos(datoMostrar.getId(), txtNombre.getText(), txtRegistro.getText());
-                if(res){
-                    System.out.println("Se ejecutó la actualizacion");
-                }else{
-                    System.out.println("No se ejecutó la actualización");
+                if(!datos.isEmpty()){
+                    boolean res = BD.actualizarDatos(datoMostrar.getId(), txtNombre.getText(), txtRegistro.getText());
+                    if(res){
+                        System.out.println("Se ejecutó la actualizacion");
+                    }else{
+                        System.out.println("No se ejecutó la actualización");
+                    }
+                    datos = BD.LeerTodosLosDatos();
                 }
-                datos = BD.LeerTodosLosDatos();
             }
         });
+
+        btnEliminar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(!datos.isEmpty()){
+                    BD.borrarDato(datoMostrar.getId());
+                    datos = BD.LeerTodosLosDatos();
+                    if(datos.isEmpty()){
+
+                    }else{
+                        datoMostrar = datos.get(navegador);
+                        updateTextField();
+                    }
+                }
+            }
+        });
+    }
+
+    void updateTextField(){
+        lblId.setText("ID: " + datoMostrar.getId());
+        txtNombre.setText(datoMostrar.getNombre());
+        txtRegistro.setText(datoMostrar.getRegistro());
     }
 }

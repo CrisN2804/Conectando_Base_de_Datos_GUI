@@ -28,14 +28,7 @@ public class DatosUsuario {
     public void setRegistro(String registro) {
         this.registro = registro;
     }
-
-    DatosUsuario(){
-        setId(0);
-        setNombre("John Doe");
-        setRegistro("00000000");
-    }
-
-    public DatosUsuario(int id, String nombre, String registro){
+        public DatosUsuario(int id, String nombre, String registro){
         setId(id);
         setNombre(nombre);
         setRegistro(registro);

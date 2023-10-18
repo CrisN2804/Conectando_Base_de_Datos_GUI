@@ -90,10 +90,20 @@ public class BaseDeDatos {
                         sql.setInt(3, id);
                         rs = sql.executeUpdate();
                         sql.close();
-                        System.out.println("Se actualizó con los datos...");
-                        System.out.println("ID: " + id);
-                        System.out.println("Nombre: " + nombre);
-                        System.out.println("Registro: " + registro);
+                }catch(SQLException e){
+                        System.out.println(e.getMessage());
+                }
+                return rs==1;
+        }
+
+        public boolean borrarDato(int id){
+                PreparedStatement sql;
+                int rs=0;
+                try{
+                        sql = con.prepareStatement("delete from datosusuario where ID_Usuario=?");
+                        sql.setInt(1, id);
+                        rs = sql.executeUpdate();
+                        sql.close();
                 }catch(SQLException e){
                         System.out.println(e.getMessage());
                 }
